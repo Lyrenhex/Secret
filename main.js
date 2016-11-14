@@ -24,25 +24,12 @@ if( require( 'electron-squirrel-startup' ) ) return;
 
 // grab some important things from electron
 const { app, BrowserWindow, ipcMain } = require ( 'electron' );
-// we need access to the filesystem
-const fs = require ( 'fs' );
-// import gpg, so that we can interface with GnuPG - important!
-const gpg = require ( 'gpg' );
 
 // prevent JS garbage collection killing window
 let win;
 let contents;
 
 var ico = `${__dirname}/app/res/img/icon.ico`;
-
-// if it doesn't exist, make the keys folder
-fs.mkdir ( 'keys', 0777, function ( error ) {
-  if ( error ) {
-    if ( error.code !== "EEXIST" ) {
-      console.log ( 'We couldn\'t make the keys folder', error );
-    }
-  }
-} );
 
 function spawnWin () {
   // spawn the window
@@ -58,7 +45,7 @@ function spawnWin () {
   win.loadURL ( `file://${__dirname}/app/index.html` );
 
   contents.on ( 'did-finish-load', function () {
-
+    
   } );
 }
 

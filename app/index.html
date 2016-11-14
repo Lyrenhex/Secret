@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <link rel='stylesheet' href='../node_modules/material-design-lite/material.min.css' />
     <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
     <script src='../node_modules/material-design-lite/material.min.js'></script>
+    <link rel='stylesheet' href='res/css/style.css' />
 
     <!-- run our own scripts -->
     <script src='res/js/script.js'></script>
@@ -71,7 +72,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <section class='mdl-layout__tab-panel is-active' id='ft-keys'>
           <div class='page-content'>
-
+            <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised' onclick='newKeyPair()'>
+              Create new key pair
+            </button>
+            <div id='newkey-loader' class='mdl-progress mdl-js-progress mdl-progress__indeterminate'></div>
           </div>
         </section>
 
