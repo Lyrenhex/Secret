@@ -1,0 +1,28 @@
+{
+  "name": "secret",
+  "version": "0.0.1",
+  "description": "A multi-purpose GnuPG Material Design encryption tool.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scratso/Secret.git"
+  },
+  "author": "Damian Heaton <dh64784@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Scratso/Secret/issues"
+  },
+  "homepage": "https://github.com/Scratso/Secret#readme",
+  "devDependencies": {
+    "electron-prebuilt": "^1.4.6",
+    "electron-winstaller": "^2.4.1"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "gpg": "^0.4.1",
+    "material-design-lite": "^1.2.1"
+  }
+}

@@ -1,0 +1,94 @@
+<!--
+Secret GnuPG Simple Material Design Encryption Tool
+Copyright (C) 2016  Damian Heaton
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+
+    <title>Secret</title>
+
+    <!-- material design stuff -->
+    <link rel='stylesheet' href='../node_modules/material-design-lite/material.min.css' />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
+    <script src='../node_modules/material-design-lite/material.min.js'></script>
+
+    <!-- run our own scripts -->
+    <script src='res/js/script.js'></script>
+  </head>
+
+  <body>
+    <div class='mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs'>
+
+      <header class='mdl-layout__header'>
+
+        <div class='mdl-layout__icon'></div>
+
+        <div class='mdl-layout__header-row'>
+          <span class='mdl-layout__title'>
+            Secret Encryption
+          </span>
+        </div>
+
+        <div class='mdl-layout__tab-bar mdl-js-ripple-effect'>
+          <a href='#ft-keys' class='mdl-layout__tab is-active'>
+            Keys
+          </a>
+          <a href='#ft-files' class='mdl-layout__tab'>
+            Files
+          </a>
+          <a href='#ft-send' class='mdl-layout__tab'>
+            Send
+          </a>
+        </div>
+
+      </header>
+
+      <div class='mdl-layout__drawer'>
+
+        <span class='mdl-layout__title'>
+          Secret Encryption
+        </span>
+
+      </div>
+
+      <main class='mdl-layout__content'>
+
+        <section class='mdl-layout__tab-panel is-active' id='ft-keys'>
+          <div class='page-content'>
+
+          </div>
+        </section>
+
+        <section class='mdl-layout__tab-panel' id='ft-files'>
+          <div class='page-content'>
+
+          </div>
+        </section>
+
+        <section class='mdl-layout__tab-panel' id='ft-send'>
+          <div class='page-content'>
+
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </body>
+</html>
