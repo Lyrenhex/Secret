@@ -17,11 +17,12 @@
   },
   "homepage": "https://github.com/Scratso/Secret#readme",
   "devDependencies": {
-    "electron-prebuilt": "^1.4.6",
+    "electron": "^1.4.6",
     "electron-winstaller": "^2.4.1"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "material-components-web": "^0.1.1",
     "material-design-lite": "^1.2.1",
     "openpgp": "^2.3.5"
   }

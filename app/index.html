@@ -22,15 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <meta charset='utf-8' />
 
     <title>Secret</title>
-
-    <!-- material design stuff -->
-    <link rel='stylesheet' href='../node_modules/material-design-lite/material.min.css' />
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
-    <script src='../node_modules/material-design-lite/material.min.js'></script>
-    <link rel='stylesheet' href='res/css/style.css' />
-
-    <!-- run our own scripts -->
-    <script src='res/js/script.js'></script>
   </head>
 
   <body>
@@ -56,6 +47,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           <a href='#ft-send' class='mdl-layout__tab'>
             Send
           </a>
+          <a href='#ft-msgs' class='mdl-layout__tab'>
+            Messaging
+          </a>
         </div>
 
       </header>
@@ -75,7 +69,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised' onclick='newKeyPair()'>
               Create new key pair
             </button>
-            <div id='newkey-loader' class='mdl-progress mdl-js-progress mdl-progress__indeterminate'></div>
           </div>
         </section>
 
@@ -91,8 +84,86 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           </div>
         </section>
 
+        <section class='mdl-layout__tab-panel' id='ft-msgs'>
+          <div class='page-content'>
+
+          </div>
+        </section>
+
       </main>
 
+      <div class="load-back" id="dark-back"></div>
+
+      <div id='load-front' class="mdl-spinner mdl-js-spinner is-active"></div>
+
+      <div class="modal mdl-shadow--2dp" id="login-modal">
+        <h2>Log in to Secret</h2>
+        <form id="login">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="login-email">
+            <label class="mdl-textfield__label" for="login-email">Email</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="password" id="login-password">
+            <label class="mdl-textfield__label" for="login-password">Passphrase</label>
+          </div><br />
+          <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised'>
+            Log in
+          </button>
+        </form>
+
+        <h2>Sign up to Secret</h2>
+        <form id="register">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="reg-email">
+            <label class="mdl-textfield__label" for="reg-email">Email</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="password" id="reg-password">
+            <label class="mdl-textfield__label" for="reg-password">Passphrase</label>
+          </div><br />
+          <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised'>
+            Sign up
+          </button>
+        </form>
+      </div>
+
+      <div class="modal mdl-shadow--2dp" id="newkey-modal">
+        <h2>Create an OpenPGP Keypair</h2>
+        <form id="newkey">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="newkey-name" required>
+            <label class="mdl-textfield__label" for="newkey-name">Name</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="email" id="newkey-email" required>
+            <label class="mdl-textfield__label" for="newkey-email">Email Address</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="password" id="newkey-passphrase" required>
+            <label class="mdl-textfield__label" for="newkey-passphrase">Key Passphrase</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" value="4096" id="newkey-bits" required>
+            <label class="mdl-textfield__label" for="newkey-bits">Number of Bits</label>
+            <span class="mdl-textfield__error">Must be a number between 1024 and 4096 (we recommend 4096)</span>
+          </div><br />
+          <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised'>
+            Create Key
+          </button>
+        </form>
+      </div>
+
     </div>
+
+    <!-- material design stuff -->
+    <link rel='stylesheet' href='../node_modules/material-design-lite/material.min.css' />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
+    <script src='../node_modules/material-design-lite/material.min.js'></script>
+    <link rel='stylesheet' href='res/css/style.css' />
+
+    <!-- run our own scripts -->
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script src='res/js/script.js'></script>
   </body>
 </html>
