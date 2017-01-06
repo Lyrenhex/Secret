@@ -56,8 +56,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
       <div class='mdl-layout__drawer'>
 
-        <span class='mdl-layout__title'>
-          Secret Encryption
+        <span class='mdl-layout__title' id="ui-username">
+          Username
         </span>
 
       </div>
@@ -99,11 +99,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       <div class="modal mdl-shadow--2dp" id="login-modal">
         <h2>Log in to Secret</h2>
         <form id="login">
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="login-email">
             <label class="mdl-textfield__label" for="login-email">Email</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="password" id="login-password">
             <label class="mdl-textfield__label" for="login-password">Passphrase</label>
           </div><br />
@@ -114,11 +114,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <h2>Sign up to Secret</h2>
         <form id="register">
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="reg-email">
             <label class="mdl-textfield__label" for="reg-email">Email</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="password" id="reg-password">
             <label class="mdl-textfield__label" for="reg-password">Passphrase</label>
           </div><br />
@@ -131,19 +131,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       <div class="modal mdl-shadow--2dp" id="newkey-modal">
         <h2>Create an OpenPGP Keypair</h2>
         <form id="newkey">
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="newkey-name" required>
             <label class="mdl-textfield__label" for="newkey-name">Name</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="email" id="newkey-email" required>
             <label class="mdl-textfield__label" for="newkey-email">Email Address</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="password" id="newkey-passphrase" required>
             <label class="mdl-textfield__label" for="newkey-passphrase">Key Passphrase</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" value="4096" id="newkey-bits" required>
             <label class="mdl-textfield__label" for="newkey-bits">Number of Bits</label>
             <span class="mdl-textfield__error">Must be a number between 1024 and 4096 (we recommend 4096)</span>
@@ -152,6 +152,51 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             Create Key
           </button>
         </form>
+      </div>
+
+      <div class="modal mdl-shadow--2dp" id="decrypt-password">
+        <h2>Welcome back</h2>
+        <p>For security reasons, a lot of the data that Secret persists is encrypted at rest (to protect your data). This includes some bits of data that are, in turn, required to access the rest of your data (crazy, right?).</p>
+        <p>In order for us to access this data (because we can't) for you, please enter your account password below. (We promise that it will *not* be transmitted elsewhere.) This password will not be stored, and no members of Secret's staff will have access, nor be able to obtain access, to this data.</p>
+        <form id="acc-pass">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="acc-pass-un" required>
+            <label class="mdl-textfield__label" for="acc-pass-pass">Your account password</label>
+          </div>
+          <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised'>
+            Decrypt data
+          </button>
+        </form>
+      </div>
+
+      <div class="modal mdl-shadow--2dp" id="setun-modal">
+        <h2>Create a username</h2>
+        <p>We know you're busy getting set up with Secret, and interruptions are a pain! But <b>this is important</b>.</p>
+        <p>Secret uses usernames to provide a simple and easy way to find the people you care about. Unfortunately, your account doesn't have a username associated with it; so no-one can find you!</p>
+        <p>Please, take just two seconds out of your day to set a username, and simplify the task for your friends and family.</p>
+        <p>Thanks, team Secret. o/</p>
+        <form id="setun">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="setun-un" required>
+            <label class="mdl-textfield__label" for="newkey-name">Your Username</label>
+          </div>
+          <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised'>
+            Set my username
+          </button>
+        </form>
+      </div>
+
+      <div class="modal mdl-shadow--2dp" id="verify-email">
+        <h2>Verify your Email Address</h2>
+        <p>We're sorry to have to intrude on your work, but we've noticed that you haven't verified your email address yet. Email verification is extremely important - especially to us in the security scene - as it means that we can guarantee that the person that you're talking to on Secret is definitely who they claim to be.</p>
+        <p>Please verify your email address by clicking the link in the email we've sent you. Or, ask for it to be resent by clicking the button below.</p>
+        <p>Thanks, team Secret. o/</p>
+        <button class='mdl-button mdl-js-button mdl-js-ripple-effect' onclick="hideModal('verify-email')">
+          Close
+        </button>
+        <button class='mdl-button mdl-js-button mdl-js-ripple-effect' onclick="USER.sendEmailVerification()">
+          Send Verification Email
+        </button>
       </div>
 
     </div>

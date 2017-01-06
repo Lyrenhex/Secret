@@ -28,6 +28,9 @@ pgp.config.aead_protect = true;
 
 var keys = 1;
 var USER;
+var keyData = {};
+var uKeyData;
+var acc_pass;
 
 // if it doesn't exist, make the keys folder
 fs.mkdir ( 'keys', 0777, function ( error ) {
@@ -62,16 +65,42 @@ $(document).ready( function () {
   auth.onAuthStateChanged(function(user){
     hideLoad();
     if(user){
-      // signed in -- do some fancy stuff
-      firebase.database().ref(`/${user.uid}/data/seckeys`).on('child_added', function(snapshot) {
-        console.log(snapshot.val());
-        // add the key's card to the keys list thingy
-        keys++;
-      });
+      if(user.displayName){
+        // signed in -- do some fancy stuff
+        database.ref(`/${user.uid}/data/seckeys`).on('child_added', function(snapshot) {
+          console.log(snapshot.val());
+          // add the key's card to the keys list thingy
+          keys++;
+        });
+        document.getElementById('ui-username').textContent = user.displayName;
+      }else{
+        // they have no username -- we should ask them to set one
+        showModal('setun-modal');
+      }
+      if(!user.emailVerified){
+        // email isn't verified -- perhaps the account isn't who it purports to be? request that they verify their email.
+        showModal('verify-email');
+      }
       USER = user;
     }else{
       // not signed in -- log in / register
       showModal ('login-modal');
+    }
+  });
+
+  fs.readFile ("keys.dat.json", function (err, data) {
+    if (err) {
+      if (err.code == "ENOENT") {
+        console.log("keys.dat.json doesn't exist. should be fixed on close. all is well.")
+      } else {
+        // all isn't well; something else is wrong?
+        throw err; // rethrow it. don't catch it.
+      }
+    } else {
+      showModal('decrypt-password');
+      // file loaded fine. assign parsed JSON to keyData
+      // noting that this is asynchronous, in a *very* rare case we might have hit this point after already modifying the keyData object. thus, we should cycle through everything from the file's data and add it to the object; don't nuke the object.
+      uKeyData = data;
     }
   });
 
@@ -80,22 +109,67 @@ $(document).ready( function () {
     var email = $("#reg-email").val().toString();
     var pass = $("#reg-password").val().toString();
 
+    hideModal('login-modal');
+
     firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
       console.log(error);
+      showModal('login-modal');
+      alert("Could not register account: " + error.message);
     });
-
-    hideModal('login-modal');
   });
   $("#login").submit(function(e){
     e.preventDefault();
     var email = $("#login-email").val().toString();
     var pass = $("#login-password").val().toString();
 
+    hideModal('login-modal');
+
     firebase.auth().signInWithEmailAndPassword(email, pass).catch(function(error) {
       console.log(error);
+      showModal('login-modal');
+      alert("Could not sign in: " + error.message);
     });
+  });
+  $("#setun").submit(function(e){
+    e.preventDefault();
+    var username = $("#setun-un").val().toString();
+    console.log(username);
 
-    hideModal('login-modal');
+    firebase.database().ref('/usermap').once('value', function(snapshot) {
+      console.log(snapshot);
+      if(snapshot.hasChild(username)){
+        // someone's already grabbed that username. tell the user and ask them to change it.
+        alert("Whoops! That username's already been grabbed by someone else. How about you try something new?");
+      }else{
+        console.log("setting displayname");
+        USER.updateProfile({
+          displayName: username
+        }).then(function(){
+          // update successful. we can close the modal.
+          hideModal('setun-modal');
+          document.getElementById('ui-username').textContent = username;
+          database.ref(`/usermap/${username}`).set(USER.uid);
+        },
+        function(err){
+          // something went wrong
+          console.log(err);
+          alert("Umm... Something went wrong. :/ Take a look (and report it maybe?): " + err);
+        });
+      }
+    });
+    $('acc-pass').submit(function(e){
+      e.preventDefault();
+      acc_pass = $('acc-pass-pass').val().toString();
+      hideModal('decrypt-password');
+
+      pgp.decrypt() // TODO: create a generic account key on account creation, add stuff to encrypt the keys.dat.json file when saved and add stuff here to decrypt that file (all using the generic account key).
+    });
+  });
+
+  $(window).unload(function() {
+    showLoad();
+    // save the keyData object. we should use blocking here; it should delay the window close (important!) and we've activated the loading screen.
+    fs.writeFileSync ("keys.dat.json", JSON.stringify(keyData, null, 4));
   });
 } );
 
@@ -120,8 +194,11 @@ function newKeyPair () {
     pgp.generateKey ( options ).then ( function ( key ) {
       console.log( key.privateKeyArmored, key.publicKeyArmored );
 
-      firebase.database().ref(`/${USER.uid}/data/seckeys/${keys}`).set(key.privateKeyArmored);
+      keyData[keys] = options.passphrase;
+
+      // note: the following database set commands are in a set order. it is IMPERATIVE that they are not flipped; flipping them desyncs the numbers.
       firebase.database().ref(`/pubkeys/${USER.uid}/${keys}`).set(key.publicKeyArmored);
+      firebase.database().ref(`/${USER.uid}/data/seckeys/${keys}`).set(key.privateKeyArmored);
 
       hideLoad();
     } );
