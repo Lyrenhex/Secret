@@ -38,10 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
         <div class='mdl-layout__tab-bar mdl-js-ripple-effect'>
-          <a href='#ft-keys' class='mdl-layout__tab is-active'>
-            Keys
-          </a>
-          <a href='#ft-files' class='mdl-layout__tab'>
+          <a href='#ft-files' class='mdl-layout__tab is-active'>
             Files
           </a>
           <a href='#ft-send' class='mdl-layout__tab'>
@@ -60,17 +57,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           Username
         </span>
 
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" onclick="showModal('reset-key')" href="#">Reset my key</a>
+        </nav>
+
       </div>
 
       <main class='mdl-layout__content'>
-
-        <section class='mdl-layout__tab-panel is-active' id='ft-keys'>
-          <div class='page-content'>
-            <button class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised' onclick='newKeyPair()'>
-              Create new key pair
-            </button>
-          </div>
-        </section>
 
         <section class='mdl-layout__tab-panel' id='ft-files'>
           <div class='page-content'>
@@ -129,19 +122,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       </div>
 
       <div class="modal mdl-shadow--2dp" id="newkey-modal">
-        <h2>Create an OpenPGP Keypair</h2>
+        <h2>Create your OpenPGP Keypair</h2>
         <form id="newkey">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="newkey-name" required>
             <label class="mdl-textfield__label" for="newkey-name">Name</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="email" id="newkey-email" required>
-            <label class="mdl-textfield__label" for="newkey-email">Email Address</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="newkey-passphrase" required>
-            <label class="mdl-textfield__label" for="newkey-passphrase">Key Passphrase</label>
           </div>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" value="4096" id="newkey-bits" required>
@@ -196,6 +181,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </button>
         <button class='mdl-button mdl-js-button mdl-js-ripple-effect' onclick="USER.sendEmailVerification()">
           Send Verification Email
+        </button>
+      </div>
+
+      <div class="modal mdl-shadow--2dp" id="reset-key">
+        <h2>Reset your OpenPGP Key</h2>
+        <p>If you're concerned that, somehow, your OpenPGP key has been compromised, you may trigger a reset of your Secret account's OpenPGP key. Doing so will <b>wipe the existing key from our servers</b>, which, it should be noted, will <b>make it impossible to read your previous encrypted messages</b> from within Secret.</p>
+        <p>If you're sure about this, hit &ldquo;Reset my key&rdquo;.</p>
+        <button class='mdl-button mdl-js-button mdl-js-ripple-effect' onclick="hideModal('reset-key')">
+          Close
+        </button>
+        <button class='mdl-button mdl-js-button mdl-js-ripple-effect' onclick="hideModal('reset-key'); newKeyPair()">
+          Reset my key
         </button>
       </div>
 
