@@ -29,6 +29,7 @@ var key = {
   secret: null,
   password: null
 };
+var users = [];
 
 // we have to import jQuery weirdly because of Electron
 window.$ = window.jQuery = require(`${__dirname}/res/js/jquery.min.js`);
@@ -76,6 +77,25 @@ $(document).ready( function () {
     }
   });
 
+  database.ref('/secret/users').on('child_added', snap => {
+    users.push(snap.val());
+
+    var cell = document.createElement("div");
+    cell.className = "mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop";
+    cell.id = `${snap.val()}-cell`;
+
+    var card = document.createElement("div");
+    card.className = "card mdl-shadow--2dp";
+    card.appendChild(
+      document.createTextNode(snap.val())
+    );
+    card.id = snap.val();
+    cell.appendChild(card);
+
+    var grid = document.getElementById("users-grid");
+    grid.appendChild(cell);
+  });
+
   $("#register").submit(function(e){
     e.preventDefault();
     var email = $("#reg-email").val().toString();
@@ -83,7 +103,7 @@ $(document).ready( function () {
 
     hideModal('login-modal');
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    firebase.auth().createUserWithEmailAndPassword(email, key.password).catch(function(error) {
       console.log(error);
       showModal('login-modal');
       alert("Could not register account: " + error.message);
@@ -96,7 +116,7 @@ $(document).ready( function () {
 
     hideModal('login-modal');
 
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    firebase.auth().signInWithEmailAndPassword(email, key.password).catch(function(error) {
       console.log(error);
       showModal('login-modal');
       alert("Could not sign in: " + error.message);
@@ -121,6 +141,7 @@ $(document).ready( function () {
           hideModal('setun-modal');
           document.getElementById('ui-username').textContent = username;
           database.ref(`/secret/usermap/${username}`).set(USER.uid);
+          database.ref(`/secret/users/${users.length + 1}`).set(username);
           newKeyPair();
         },
         function(err){
@@ -160,7 +181,7 @@ function newKeyPair () {
     var options = {
       userIds: { name: $('#newkey-name').val().toString(), email: USER.emailAddress },
       numBits: parseInt($('#newkey-bits').val()),
-      passphrase: password
+      passphrase: key.password
     }
 
     hideModal ('newkey-modal');
