@@ -1,5 +1,5 @@
 /*
-Secret GnuPG Simple Material Design Encryption Tool
+Secret OpenPGP Simple Material Design Encryption Tool
 Copyright (C) 2016  Damian Heaton
 
 This program is free software: you can redistribute it and/or modify
@@ -91,6 +91,11 @@ $(document).ready( function () {
     );
     card.id = snap.val();
     cell.appendChild(card);
+
+    card.onclick = function(){
+      console.log("clicked");
+      electron.ipcRenderer.send('messages', this.id, key);
+    }
 
     var grid = document.getElementById("users-grid");
     grid.appendChild(cell);
